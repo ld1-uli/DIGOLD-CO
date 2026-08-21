@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIGOLD&amp;CO — Négoce de permis d'exploration aurifère, Sénégal</title>
+<meta name="description" content="DIGOLD&CO acquiert, cède et valorise des permis d'exploration et d'exploitation aurifère au Sénégal. Expertise géologique, due diligence et accompagnement réglementaire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0a0908;
+    --black-2: #14120f;
+    --panel: #1a1712;
+    --gold: #d4af5a;
+    --gold-bright: #f3d789;
+    --gold-deep: #8a6a2f;
+    --parchment: #ece7dc;
+    --parchment-dim: #b9b2a2;
+    --line: rgba(212,175,90,0.22);
+    --radius: 2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--black);
+    color: var(--parchment);
+    font-family:'Manrope', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    color:var(--parchment);
+  }
+  .mono{
+    font-family:'Space Mono', monospace;
+    letter-spacing:0.06em;
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:0.7em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;
+    height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+  section{padding:110px 0;}
+  @media(max-width:768px){ section{padding:72px 0;} }
+
+  /* subtle topographic contour background texture */
+  .contours{
+    position:absolute; inset:0;
+    background-image:
+      repeating-radial-gradient(circle at 18% 30%, transparent 0 46px, rgba(212,175,90,0.035) 47px 48px, transparent 49px 94px),
+      repeating-radial-gradient(circle at 85% 70%, transparent 0 60px, rgba(212,175,90,0.03) 61px 62px, transparent 63px 124px);
+    pointer-events:none;
+  }
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 26px;
+    font-family:'Manrope', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    border-radius:var(--radius);
+    border:1px solid var(--gold);
+    transition:all .25s ease;
+    white-space:nowrap;
+  }
+  .btn-solid{
+    background:linear-gradient(135deg, var(--gold-bright), var(--gold) 60%, var(--gold-deep));
+    color:#161208;
+  }
+  .btn-solid:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .btn-ghost{
+    color:var(--parchment);
+    border-color:var(--line);
+  }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible{
+    outline:2px solid var(--gold-bright);
+    outline-offset:3px;
+  }
+
+  /* ===== HEADER ===== */
+  .topbar{
+    background:var(--black-2);
+    border-bottom:1px solid var(--line);
+    font-family:'Space Mono', monospace;
+    font-size:0.74rem;
+    color:var(--parchment-dim);
+  }
+  .topbar .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:9px;
+    padding-bottom:9px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .topbar-info{ display:flex; gap:24px; flex-wrap:wrap; }
+  .topbar a:hover{ color:var(--gold); }
+
+  header.main-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,9,8,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 0;
+    gap:20px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand img{ height:42px; width:auto; }
+  .brand-text{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+    line-height:1.1;
+  }
+  .brand-text span{
+    display:block;
+    font-family:'Space Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.2em;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-top:3px;
+  }
+  nav.links{
+    display:flex;
+    gap:32px;
+    font-size:0.88rem;
+    font-weight:600;
+  }
+  nav.links a{
+    position:relative;
+    padding:4px 0;
+    color:var(--parchment-dim);
+    transition:color .2s;
+  }
+  nav.links a:hover{ color:var(--gold-bright); }
+  .nav-cta{ display:flex; align-items:center; gap:18px; }
+  .burger{ display:none; background:none; border:none; color:var(--parchment); font-size:1.6rem; cursor:pointer; }
+
+  @media(max-width:920px){
+    nav.links{ display:none; }
+    .burger{ display:block; }
+    .nav-cta .btn{ padding:10px 16px; font-size:0.8rem; }
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:150px 0 130px;
+    background:
+      radial-gradient(ellipse 900px 500px at 78% 0%, rgba(212,175,90,0.10), transparent 60%),
+      var(--black);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:60px;
+    align-items:end;
+  }
+  @media(max-width:940px){
+    .hero-grid{ grid-template-columns:1fr; }
+  }
+  .hero h1{
+    font-size:clamp(2.5rem, 5.4vw, 4.2rem);
+    line-height:1.04;
+    margin:22px 0 26px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .hero p.lead{
+    max-width:540px;
+    color:var(--parchment-dim);
+    font-size:1.08rem;
+    margin-bottom:38px;
+  }
+  .hero-cta{ display:flex; gap:16px; flex-wrap:wrap; margin-bottom:56px; }
+
+  .permit-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    padding:26px 26px 22px;
+    position:relative;
+  }
+  .permit-card::before, .permit-card::after{
+    content:"";
+    position:absolute;
+    width:16px; height:16px;
+    border:1px solid var(--gold);
+  }
+  .permit-card::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .permit-card::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .permit-card .mono{ font-size:0.7rem; color:var(--gold); display:block; margin-bottom:14px;}
+  .permit-card h3{ font-size:1.3rem; margin-bottom:6px; }
+  .permit-card .permit-meta{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    color:var(--parchment-dim);
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+  }
+  .permit-meta b{ color:var(--gold-bright); font-weight:400; }
+
+  .hero-stats{
+    display:flex;
+    gap:0;
+    border-top:1px solid var(--line);
+    margin-top:20px;
+  }
+  @media(max-width:940px){ .hero-stats{ flex-wrap:wrap; } }
+  .hero-stats div{
+    flex:1;
+    padding:22px 24px 0;
+    border-right:1px solid var(--line);
+  }
+  .hero-stats div:last-child{ border-right:none; }
+  .hero-stats strong{
+    font-family:'Fraunces', serif;
+    font-size:1.9rem;
+    color:var(--gold-bright);
+    display:block;
+  }
+  .hero-stats span{
+    font-size:0.78rem;
+    color:var(--parchment-dim);
+  }
+
+  /* ===== SECTION HEADS ===== */
+  .section-head{
+    max-width:640px;
+    margin-bottom:56px;
+  }
+  .section-head h2{
+    font-size:clamp(1.9rem, 3.4vw, 2.6rem);
+    margin-top:16px;
+  }
+  .section-head p{ color:var(--parchment-dim); margin-top:16px; font-size:1.02rem; }
+  .center{ text-align:center; margin-left:auto; margin-right:auto; }
+
+  /* ===== A PROPOS ===== */
+  .apropos{ background:var(--black-2); border-bottom:1px solid var(--line); }
+  .apropos-grid{
+    display:grid;
+    grid-template-columns:0.95fr 1.05fr;
+    gap:70px;
+    align-items:start;
+  }
+  @media(max-width:900px){ .apropos-grid{ grid-template-columns:1fr; gap:44px; } }
+  .apropos-grid p{ color:var(--parchment-dim); margin-bottom:16px; }
+  .apropos-grid p:first-of-type{
+    font-family:'Fraunces', serif;
+    font-size:1.35rem;
+    color:var(--parchment);
+    line-height:1.45;
+  }
+
+  .value-list{ display:grid; gap:0; border-top:1px solid var(--line); }
+  .value-row{
+    display:grid;
+    grid-template-columns:130px 1fr;
+    gap:20px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .value-row .mono{ color:var(--gold); font-size:0.75rem; padding-top:4px; }
+  .value-row h4{ font-size:1.08rem; margin-bottom:6px; }
+  .value-row p{ color:var(--parchment-dim); font-size:0.94rem; }
+
+  /* ===== SERVICES ===== */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media(max-width:900px){ .services-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:600px){ .services-grid{ grid-template-columns:1fr; } }
+  .service-card{
+    background:var(--black);
+    padding:36px 30px;
+    transition:background .25s ease;
+  }
+  .service-card:hover{ background:var(--black-2); }
+  .service-card .num{
+    font-family:'Space Mono', monospace;
+    font-size:0.75rem;
+    color:var(--gold-deep);
+    margin-bottom:20px;
+    display:block;
+  }
+  .service-card h3{ font-size:1.2rem; margin-bottom:10px; }
+  .service-card p{ color:var(--parchment-dim); font-size:0.92rem; }
+
+  /* ===== PROCESS ===== */
+  .process{ background:var(--black-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .process-steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:36px;
+  }
+  @media(max-width:900px){ .process-steps{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .process-steps{ grid-template-columns:1fr; } }
+  .process-step{ position:relative; padding-top:26px; border-top:2px solid var(--gold-deep); }
+  .process-step .mono{ color:var(--gold); font-size:0.72rem; margin-bottom:10px; display:block;}
+  .process-step h4{ font-size:1.05rem; margin-bottom:8px; }
+  .process-step p{ color:var(--parchment-dim); font-size:0.9rem; }
+
+  /* ===== WHY / STATS BAND ===== */
+  .band{
+    background:linear-gradient(120deg, #17140f, #100e0a 60%);
+    border-bottom:1px solid var(--line);
+  }
+  .band-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media(max-width:800px){ .band-grid{ grid-template-columns:repeat(2,1fr); } }
+  .band-cell{
+    background:var(--black);
+    padding:34px 26px;
+    text-align:center;
+  }
+  .band-cell strong{
+    font-family:'Fraunces', serif;
+    font-size:2.4rem;
+    color:var(--gold-bright);
+    display:block;
+  }
+  .band-cell span{
+    font-size:0.82rem;
+    color:var(--parchment-dim);
+    display:block;
+    margin-top:8px;
+  }
+
+  /* ===== SECTEURS / PORTFOLIO ===== */
+  .secteurs-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+  }
+  @media(max-width:760px){ .secteurs-grid{ grid-template-columns:1fr; } }
+  .secteur-card{
+    border:1px solid var(--line);
+    padding:30px;
+    position:relative;
+  }
+  .secteur-card .tag{
+    font-family:'Space Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold-deep);
+    padding:4px 10px;
+    display:inline-block;
+    margin-bottom:16px;
+  }
+  .secteur-card h3{ font-size:1.28rem; margin-bottom:12px; }
+  .secteur-card p{ color:var(--parchment-dim); font-size:0.95rem; }
+
+  /* ===== RESEAU / REFERENCES ===== */
+  .references{ background:var(--black-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .ref-list{
+    columns:2;
+    column-gap:60px;
+    border-top:1px solid var(--line);
+    padding-top:8px;
+  }
+  @media(max-width:700px){ .ref-list{ columns:1; } }
+  .ref-list li{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    font-size:0.98rem;
+    break-inside:avoid;
+  }
+  .ref-list li .mono{ color:var(--gold-deep); font-size:0.72rem; }
+
+  /* ===== CTA BAND ===== */
+  .cta-band{
+    text-align:center;
+    padding:110px 0;
+    position:relative;
+    background:
+      radial-gradient(ellipse 700px 350px at 50% 0%, rgba(212,175,90,0.10), transparent 65%),
+      var(--black);
+  }
+  .cta-band h2{ font-size:clamp(2rem,4vw,3rem); max-width:700px; margin:16px auto 30px; }
+  .cta-buttons{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--black-2);
+    border-top:1px solid var(--line);
+    padding-top:80px;
+  }
+  .foot-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1.2fr;
+    gap:48px;
+    padding-bottom:56px;
+    border-bottom:1px solid var(--line);
+  }
+  @media(max-width:860px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:520px){ .foot-grid{ grid-template-columns:1fr; } }
+  .foot-brand{ display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; }
+  .foot-brand img{ height:44px; }
+  .foot-col h5{
+    font-family:'Space Mono', monospace;
+    font-size:0.74rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  .foot-col p, .foot-col li{ color:var(--parchment-dim); font-size:0.92rem; margin-bottom:12px; }
+  .foot-col a:hover{ color:var(--gold-bright); }
+  .foot-legal{
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    color:var(--parchment-dim);
+    padding:22px 0 30px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .newsletter-form{ display:flex; margin-top:6px; border:1px solid var(--line); }
+  .newsletter-form input{
+    flex:1;
+    background:transparent;
+    border:none;
+    padding:12px 14px;
+    color:var(--parchment);
+    font-family:'Manrope',sans-serif;
+    font-size:0.86rem;
+  }
+  .newsletter-form input:focus{ outline:none; }
+  .newsletter-form button{
+    background:var(--gold);
+    color:#161208;
+    border:none;
+    padding:0 18px;
+    font-weight:700;
+    font-size:0.8rem;
+    cursor:pointer;
+  }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-info">
+      <span>📍 Dakar, Sénégal</span>
+      <span>📞 <a href="tel:+221000000000">+221 76 446 76 14</a></span>
+      <span>✉️ <a href="mailto:contact@digoldco.sn">Digol&co@gmail.com</a></span>
+    </div>
+    <div class="topbar-info">
+      <a href="#" aria-label="LinkedIn">LinkedIn</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="main-nav">
+  <div class="wrap nav-inner">
+    <a href="#accueil" class="brand">
+      <img src="DIGOLD LOGO.jpeg" alt="Logo DIGOLD&CO">
+      <span class="brand-text">DIGOLD&amp;CO
+        <span>Permis miniers · Or</span>
+      </span>
+    </a>
+    <nav class="links">
+      <a href="#accueil">Accueil</a>
+      <a href="#apropos">À propos</a>
+      <a href="#services">Services</a>
+      <a href="#secteurs">Portefeuille</a>
+      <a href="#references">Références</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-solid">Étudier un permis</a>
+      <button class="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="contours"></div>
+  <div class="wrap hero-grid">
+    <div class="reveal in">
+      <p class="eyebrow">DIGOLD&amp;CO · Négoce de titres miniers</p>
+      <h1>L'or se trouve sous terre.<br>La valeur, dans <em>le bon permis</em>.</h1>
+      <p class="lead">DIGOLD&amp;CO identifie, acquiert, cède et valorise des permis de recherche et d'exploitation aurifère au Sénégal — en connectant détenteurs de titres, investisseurs et opérateurs miniers autour de transactions sécurisées.</p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-solid">Découvrir nos services</a>
+        <a href="#apropos" class="btn btn-ghost">En savoir plus sur nous</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>5+</strong><span>Permis négociés</span></div>
+        <div><strong>Dakar</strong><span>Basé au Sénégal</span></div>
+        <div><strong>100%</strong><span>Conformité DGMG</span></div>
+      </div>
+    </div>
+
+    <div class="permit-card reveal in">
+      <span class="mono">PERMIS DE RECHERCHE · OR</span>
+      <h3>Portefeuille en cession</h3>
+      <p style="color:var(--parchment-dim); font-size:0.92rem;">Titre minier disponible pour transfert, avec dossier géologique et statut réglementaire à jour, situé en zone aurifère confirmée du Sénégal oriental.</p>
+      <div class="permit-meta">
+        <span>Statut <b>Actif</b></span>
+        <span>Substance <b>Or</b></span>
+        <span>Zone <b>Sénégal Est</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A PROPOS -->
+<section class="apropos" id="apropos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">À propos de nous</p>
+      <h2>DIGOLD&amp;CO — courtage et valorisation de titres miniers</h2>
+    </div>
+    <div class="apropos-grid">
+      <div class="reveal">
+        <p>Basée à Dakar, DIGOLD&amp;CO s'est donné pour rôle de fluidifier le marché des permis d'exploration et d'exploitation aurifère au Sénégal.</p>
+        <p>Nous accompagnons les détenteurs de titres miniers souhaitant céder leurs droits, comme les investisseurs et sociétés d'exploration à la recherche d'actifs qualifiés — en garantissant à chaque transaction rigueur technique, transparence réglementaire et sécurité juridique.</p>
+        <p>Notre connaissance fine du cadastre minier sénégalais et de son cadre légal nous permet d'identifier les opportunités les plus solides et d'en assurer un transfert conforme, de la due diligence à la signature.</p>
+      </div>
+      <div class="value-list reveal">
+        <div class="value-row">
+          <span class="mono">MISSION</span>
+          <div><h4>Connecter titres et capitaux</h4><p>Faire correspondre les permis aurifères disponibles avec les investisseurs et opérateurs capables de les développer.</p></div>
+        </div>
+        <div class="value-row">
+          <span class="mono">VISION</span>
+          <div><h4>Référence du courtage minier</h4><p>Devenir l'intermédiaire de confiance du marché des permis miniers en Afrique de l'Ouest.</p></div>
+        </div>
+        <div class="value-row">
+          <span class="mono">VALEURS</span>
+          <div><h4>Rigueur · Transparence · Intégrité</h4><p>Chaque dossier est traité avec la même exigence de conformité et de vérification technique.</p></div>
+        </div>
+        <div class="value-row">
+          <span class="mono">ENGAGEMENT</span>
+          <div><h4>Un secteur minier responsable</h4><p>Favoriser des transferts de titres qui soutiennent un développement minier durable au Sénégal.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <p class="eyebrow" style="justify-content:center;">Nos services</p>
+      <h2>De la recherche du titre à sa cession</h2>
+      <p>Un accompagnement complet pour chaque étape du cycle de vie d'un permis minier aurifère.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <span class="num">01</span>
+        <h3>Sourcing de permis</h3>
+        <p>Identification et présélection de permis de recherche et d'exploitation aurifère disponibles sur le territoire sénégalais.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">02</span>
+        <h3>Due diligence géologique</h3>
+        <p>Évaluation technique du potentiel aurifère, des données historiques et de la qualité du dossier d'exploration.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">03</span>
+        <h3>Cession &amp; transfert de titres</h3>
+        <p>Structuration et exécution du transfert de droits miniers entre détenteur et acquéreur, en conformité avec le Code minier.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">04</span>
+        <h3>Accompagnement réglementaire</h3>
+        <p>Suivi des démarches auprès des autorités minières et sécurisation administrative de chaque transaction.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">05</span>
+        <h3>Négociation &amp; structuration</h3>
+        <p>Montage de la transaction, définition des conditions commerciales et mise en relation des parties prenantes.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">06</span>
+        <h3>Valorisation de portefeuille</h3>
+        <p>Estimation de la valeur d'un titre ou d'un ensemble de permis en fonction de son potentiel et de son statut réglementaire.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Méthode</p>
+      <h2>Comment se déroule une transaction</h2>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <span class="mono">ÉTAPE 1</span>
+        <h4>Qualification du dossier</h4>
+        <p>Analyse du titre, de son statut cadastral et de son potentiel géologique.</p>
+      </div>
+      <div class="process-step">
+        <span class="mono">ÉTAPE 2</span>
+        <h4>Mise en relation</h4>
+        <p>Présentation ciblée aux investisseurs ou opérateurs pertinents.</p>
+      </div>
+      <div class="process-step">
+        <span class="mono">ÉTAPE 3</span>
+        <h4>Négociation</h4>
+        <p>Structuration des conditions et rédaction des accords de cession.</p>
+      </div>
+      <div class="process-step">
+        <span class="mono">ÉTAPE 4</span>
+        <h4>Transfert conforme</h4>
+        <p>Validation réglementaire et finalisation auprès des autorités minières.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-grid reveal">
+      <div class="band-cell"><strong>15+</strong><span>Permis étudiés ou négociés</span></div>
+      <div class="band-cell"><strong>10+</strong><span>Partenaires investisseurs</span></div>
+      <div class="band-cell"><strong>Dakar</strong><span>Ancrage local sénégalais</span></div>
+      <div class="band-cell"><strong>100%</strong><span>Dossiers conformes au Code minier</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTEURS / PORTEFEUILLE -->
+<section id="secteurs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Portefeuille</p>
+      <h2>Types de titres que nous traitons</h2>
+      <p>Chaque permis est étudié individuellement selon son stade d'exploration et sa localisation.</p>
+    </div>
+    <div class="secteurs-grid reveal">
+      <div class="secteur-card">
+        <span class="tag">Recherche</span>
+        <h3>Permis de recherche aurifère</h3>
+        <p>Titres en phase d'exploration, avec ou sans travaux de sondage engagés, situés dans les ceintures aurifères reconnues du Sénégal.</p>
+      </div>
+      <div class="secteur-card">
+        <span class="tag">Exploitation</span>
+        <h3>Permis d'exploitation</h3>
+        <p>Titres arrivés au stade de l'exploitation, pour des opérateurs souhaitant reprendre ou développer un gisement identifié.</p>
+      </div>
+      <div class="secteur-card">
+        <span class="tag">Semi-mécanisé</span>
+        <h3>Petites exploitations</h3>
+        <p>Accompagnement des acteurs de la petite mine semi-mécanisée dans l'acquisition ou la cession de leurs droits.</p>
+      </div>
+      <div class="secteur-card">
+        <span class="tag">Portefeuille</span>
+        <h3>Cessions groupées</h3>
+        <p>Structuration de transactions portant sur plusieurs titres miniers détenus par un même acteur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<section class="references" id="references">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Notre réseau</p>
+      <h2>Les acteurs avec qui nous travaillons</h2>
+      <p>Ce site est en cours de finalisation — cette liste sera complétée avec vos partenaires et clients réels.</p>
+    </div>
+    <ul class="ref-list reveal">
+      <li><span>Détenteurs de titres miniers</span><span class="mono">SN</span></li>
+      <li><span>Sociétés d'exploration aurifère</span><span class="mono">SN</span></li>
+      <li><span>Investisseurs miniers</span><span class="mono">INT'L</span></li>
+      <li><span>Petites exploitations semi-mécanisées</span><span class="mono">SN</span></li>
+      <li><span>Direction Générale des Mines et de la Géologie</span><span class="mono">SN</span></li>
+      <li><span>Cabinets de conseil géologique</span><span class="mono">SN</span></li>
+      <li><span>Opérateurs miniers régionaux</span><span class="mono">AO</span></li>
+      <li><span>Autorités administratives locales</span><span class="mono">SN</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" id="contact">
+  <div class="contours"></div>
+  <div class="wrap reveal">
+    <p class="eyebrow" style="justify-content:center;">Contact</p>
+    <h2>Un permis à céder ? Un projet à acquérir ?</h2>
+    <p style="color:var(--parchment-dim); max-width:560px; margin:0 auto 30px;">Parlons de votre dossier. Nous étudions chaque titre minier avec la même rigueur, quelle que soit sa taille.</p>
+    <div class="cta-buttons">
+      <a href="mailto:contact@digoldco.sn" class="btn btn-solid">✉️ Digol&co@gmail.com </a>
+      <a href="tel:+221000000000" class="btn btn-ghost">📞 +221 76 446 76 14</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="foot-brand">
+          <img src="assets/logo.jpeg" alt="Logo DIGOLD&CO">
+          <div>
+            <strong style="font-family:'Fraunces',serif; font-size:1.1rem;">DIGOLD&amp;CO</strong>
+            <p style="margin-top:6px; margin-bottom:0;">Négoce et valorisation de permis d'exploration et d'exploitation aurifère à Dakar, Sénégal.</p>
+          </div>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5>Liens rapides</h5>
+        <ul>
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#secteurs">Portefeuille</a></li>
+          <li><a href="#references">Réseau</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Nos services</h5>
+        <ul>
+          <li>Sourcing de permis</li>
+          <li>Due diligence géologique</li>
+          <li>Cession &amp; transfert</li>
+          <li>Accompagnement réglementaire</li>
+          <li>Valorisation de portefeuille</li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <p>📍 Dakar, Sénégal</p>
+        <p>📞 <a href="tel:+221000000000">+221 00 000 00 00</a></p>
+        <p>✉️ <a href="mailto:contact@digoldco.sn">contact@digoldco.sn</a></p>
+        <h5 style="margin-top:26px;">Newsletter</h5>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="Votre email" aria-label="Email" required>
+          <button type="submit">S'abonner</button>
+        </form>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 DIGOLD&amp;CO — Dakar, Sénégal. Tous droits réservés.</span>
+      <span>NINEA : [à compléter] · RCCM : [à compléter]</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
